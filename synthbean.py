@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 import synthbean
 import asyncio
+from halo import Halo
 
 if __name__ == '__main__':
     apm_config = synthbean.render_apm_config()
@@ -9,13 +11,15 @@ if __name__ == '__main__':
 
     num_workers = synth_config.get('instance_count', 1)
     for i in range(0, num_workers):
-        client = synthbean.apm_preflight(apm_config['elasticapm'], f"synthbean-python-{str(i)}", synth_config.get('smoothing_strategy'))
+        client = synthbean.apm_preflight(
+            apm_config['elasticapm'], f"synthbean-python-{str(i)}", synth_config.get('smoothing_strategy'))
         synthbean.create_span_pool(synth_config, loop, client)
 
     try:
-        loop.run_forever()
+        with Halo(text='SynthBean active!', spinner='dots') as spinner:
+            loop.run_forever()
     except KeyboardInterrupt:
-        print("Interrupt received. Shutting down gracefully.")
+        spinner.info('Finished!')
 
     tasks = asyncio.all_tasks(loop=loop)
 
