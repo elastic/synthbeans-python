@@ -16,6 +16,14 @@ This project may be useful if you have one or more of the following needs:
 * You wish to quickly and easily create some APM data and you _do care_ that the spans are exactly consistent. (i.e., a span is always exactly the same duration). This may be helpful if want to see the how the APM application behaves when there is no variation between values and may be a good way to verify that certain calculations are being performed correctly.
 * You wish to spin up a large number of "instances" in the APM application and you do not care what data is produced.
 
+## Examples
+
+<img width="1604" alt="Capture d’écran 2021-03-15 à 10 50 58" src="https://user-images.githubusercontent.com/111616/111137985-53e43800-8577-11eb-826b-baeddd2d1681.png">
+
+SynthBean producing two spans at 1s and 5s
+
+
+
 ## Installation and Running 
 
 The project uses Poetry as its build and dependency manger. You can install the requirements
@@ -86,4 +94,5 @@ To enable Instance Spoofing, set `instance_count` in the SynthBean configuration
 instances you would like to spoof.
 
 Note that at least three threads will be allocated for every instance and some machines may experience thread exhaustion beyond 500 instances.
+
 
