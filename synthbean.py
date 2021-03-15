@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+import argparse
 import synthbean
 import asyncio
 from halo import Halo
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ac-dc', action="store_true")
+
+    cli_args = parser.parse_args()
     apm_config = synthbean.render_apm_config()
 
     synth_config = synthbean.render_synth_config()
@@ -15,11 +20,17 @@ if __name__ == '__main__':
             apm_config['elasticapm'], f"synthbean-python-{str(i)}", synth_config.get('smoothing_strategy'))
         synthbean.create_span_pool(synth_config, loop, client)
 
-    with Halo(text='SynthBean active!', spinner='dots') as spinner:
+    welcome_text = 'SynthBean active!'
+
+    if cli_args.ac_dc: 
+        synthbean.create_easter()
+        welcome_text = '-- 🎸🏴‍☠️️ For those who about to rock, the Elastic Observability Team salutes you! --'
+
+    with Halo(text=welcome_text, spinner='dots') as spinner:
         try:
-                loop.run_forever()
+            loop.run_forever()
         except KeyboardInterrupt:
-            spinner.info('Finished!')
+            spinner.info('SynthBean finished!')
 
     tasks = asyncio.all_tasks(loop=loop)
 
