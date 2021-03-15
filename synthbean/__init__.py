@@ -3,8 +3,6 @@ import yaml
 import asyncio
 import configparser
 import elasticapm
-import synthbean.resources.easter
-from multiprocessing import Process
 
 def render_apm_config() -> configparser.ConfigParser:
     config = configparser.ConfigParser()
@@ -44,5 +42,7 @@ def create_span_pool(synth_config, loop, client) -> None:
         loop.create_task(worker(synth_config['spans'][span]['duration'], span))
 
 def create_easter() -> None:
+    import synthbean.resources.easter
+    from multiprocessing import Process
     p = Process(target=synthbean.resources.easter.easter_time)
     p.start()
