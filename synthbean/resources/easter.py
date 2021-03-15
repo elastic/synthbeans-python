@@ -3,6 +3,7 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 import pygame
 import base64
+import tempfile
 
 def play_music(music_file):
     clock = pygame.time.Clock()
@@ -24,20 +25,19 @@ def easter_time():
 
     thunder = base64.b64decode(thunder64)
 
-    with open(music_file,"wb") as fh_:
-        fh_.write(thunder)
+    with tempfile.NamedTemporaryFile("wb") as music_file:
+        music_file.write(thunder)
 
-    freq = 44100
-    bitsize = -16
-    channels = 2
-    buffer = 1024
-    pygame.mixer.init(freq, bitsize, channels, buffer)
+        freq = 44100
+        bitsize = -16
+        channels = 2
+        buffer = 1024
+        pygame.mixer.init(freq, bitsize, channels, buffer)
 
-    pygame.mixer.music.set_volume(1.0)
+        pygame.mixer.music.set_volume(1.0)
 
-    try:
-        play_music(music_file)
-    except KeyboardInterrupt:
-        pygame.mixer.music.fadeout(1000)
-        pygame.mixer.music.stop()
-        os.remove(music_file)
+        try:
+            play_music(music_file.name)
+        except KeyboardInterrupt:
+            pygame.mixer.music.fadeout(1000)
+            pygame.mixer.music.stop()
