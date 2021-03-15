@@ -1,0 +1,9 @@
+spans:
+  first_span:
+    duration: 1000
+  second_span:
+    duration: 5000
+
+#instance_count: 250
+
+smoothing_strategy: floor
