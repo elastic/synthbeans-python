@@ -15,11 +15,11 @@ if __name__ == '__main__':
             apm_config['elasticapm'], f"synthbean-python-{str(i)}", synth_config.get('smoothing_strategy'))
         synthbean.create_span_pool(synth_config, loop, client)
 
-    try:
-        with Halo(text='SynthBean active!', spinner='dots') as spinner:
-            loop.run_forever()
-    except KeyboardInterrupt:
-        spinner.info('Finished!')
+    with Halo(text='SynthBean active!', spinner='dots') as spinner:
+        try:
+                loop.run_forever()
+        except KeyboardInterrupt:
+            spinner.info('Finished!')
 
     tasks = asyncio.all_tasks(loop=loop)
 
