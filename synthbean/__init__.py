@@ -1,19 +1,20 @@
+# -*- coding: utf-8 -*-
 import yaml
 import asyncio
 import configparser
 import elasticapm
 
-def render_apm_config():
+def render_apm_config() -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read('conf/settings.ini')
     return config
 
-def render_synth_config():
+def render_synth_config() -> dict:
     with open("conf/synthbean.yml") as fh_:
         synth_config = yaml.load(fh_, Loader=yaml.FullLoader)
     return synth_config
 
-def apm_preflight(config, node_name, smoothing_strategy):
+def apm_preflight(config, node_name, smoothing_strategy) -> elasticapm.Client:
 
     # We're being a bit naughty here. Shhhh.
     elasticapm.utils.cgroup.get_cgroup_container_metadata = lambda: {'container': {'id': node_name}}
@@ -31,7 +32,7 @@ def apm_preflight(config, node_name, smoothing_strategy):
     elasticapm.instrument()
     return client
 
-def create_span_pool(synth_config, loop, client):
+def create_span_pool(synth_config, loop, client) -> None:
     for span in synth_config['spans']:
         async def worker(delay, span):
              while True:
@@ -39,3 +40,9 @@ def create_span_pool(synth_config, loop, client):
                 await asyncio.sleep(delay / 1000)
                 client.end_transaction(name=span, result="success")
         loop.create_task(worker(synth_config['spans'][span]['duration'], span))
+
+def create_easter() -> None:
+    import synthbean.resources.easter
+    from multiprocessing import Process
+    p = Process(target=synthbean.resources.easter.easter_time)
+    p.start()

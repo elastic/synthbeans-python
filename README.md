@@ -94,5 +94,3 @@ To enable Instance Spoofing, set `instance_count` in the SynthBean configuration
 instances you would like to spoof.
 
 Note that at least three threads will be allocated for every instance and some machines may experience thread exhaustion beyond 500 instances.
-
-

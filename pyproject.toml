@@ -8,9 +8,13 @@ authors = ["Mike Place <mike.place@elastic.co>"]
 python = "^3.9"
 elastic-apm = "^6.0.0"
 PyYAML = "^5.4.1"
+halo = "^0.0.31"
+psutil = "^5.8.0"
+pygame = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
+autopep8 = "^1.5.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
