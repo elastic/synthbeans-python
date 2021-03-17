@@ -94,3 +94,23 @@ To enable Instance Spoofing, set `instance_count` in the SynthBean configuration
 instances you would like to spoof.
 
 Note that at least three threads will be allocated for every instance and some machines may experience thread exhaustion beyond 500 instances.
+
+#### Jitter
+
+Spans can introduce jitter which will vary the amount of delay by a specified number of milliseconds. For each span which is sent, a random number
+is chosen between 0 and the number specified in the span configuration. The number is then either added or subtracted from the goal span length pseudo-randomly. 
+
+Note: If any span has a `jitter` configuration set, you must not use any smoothing strategy. Attempting to use jitter with smoothing will result
+in an error and the application will exit.
+
+Example:
+
+```
+jitter: 1
+  duration:
+    first_span:
+    duration: 1000
+    jitter: 10
+```
+
+The above will result in duration values between 990 an 1010.
