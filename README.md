@@ -44,6 +44,16 @@ and the second defines the type of synthetic data you wish the application to se
 Configure the agent by editing `conf/settings.ini`. Settings which are listed there are the only settings
 which will be included. Any additional settings added to the file will be ignored.
 
+You may also configure SynthBean through the use of environment variables. Below is a list of variables
+which may be set in the environment and the variables that they control in the application:
+
+|Environment variable|Application variable|Description|
+|--------------------|--------------------|-----------|
+|SYNTHBEAN_SERVER_URL|server_url|The URL of the Elasticsearch server to connect to|
+|SYNTHBEAN_SERVICE_NAME|service_name|The service name of the Synthbean|
+|SYNTHBEAN_ENVIRONMENT|environment|The application environment in APM|
+|SYNTHBEAN_CLOUD_PROVIDER|cloud_provider|The cloud provider value in APM|
+
 ### Configuring the Application
 
 The application is controlled by editing `conf/synthbean.yml`.
