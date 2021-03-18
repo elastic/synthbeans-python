@@ -17,7 +17,10 @@ if __name__ == '__main__':
     num_workers = synth_config.get('instance_count', 1)
     for i in range(0, num_workers):
         client = synthbean.apm_preflight(
-            apm_config['elasticapm'], f"synthbean-python-{str(i)}", synth_config.get('smoothing_strategy'))
+            apm_config['elasticapm'],
+            f"synthbean-python-{str(i)}",
+            synth_config
+            )
         synthbean.create_span_pool(synth_config, loop, client)
 
     welcome_text = 'SynthBean active!'

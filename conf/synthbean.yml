@@ -1,9 +1,10 @@
 spans:
   first_span:
     duration: 1000
+#    jitter: 10
   second_span:
     duration: 5000
 
-#instance_count: 250
+#instance_count: 100
 
 smoothing_strategy: floor
