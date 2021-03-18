@@ -8,3 +8,5 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-dev --no-interaction --no-ansi
 
 COPY . /synthbean
+WORKDIR /synthbean
+CMD ["poetry", "run", "python", "./synthbean.py"]
