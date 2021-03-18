@@ -15,20 +15,24 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-from elasticapm.conf.constants import SPAN, TRANSACTION
-from elasticapm.processors import for_events
-import math
-import logging
-import pprint
+import argparse
+import yaml
+import configparser
 
 
-@for_events(TRANSACTION)
-def span_smoother(client, event):
-    # TODO make this smoothing value configurable?
-    orig_val = event['duration']
-    smoothed = math.floor(event['duration']/1000) * 1000
-    event['duration'] = smoothed
-    logging.debug(
-        f"Logging a transaction with duration: {smoothed}. (Original value: {orig_val})")
-    logging.debug(event)
-    return event
+def gather_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ac-dc', action="store_true")
+    return parser.parse_args()
+
+
+def render_apm_config() -> configparser.ConfigParser:
+    config = configparser.ConfigParser()
+    config.read('conf/settings.ini')
+    return config
+
+
+def render_synth_config() -> dict:
+    with open("conf/synthbean.yml") as fh_:
+        synth_config = yaml.load(fh_, Loader=yaml.FullLoader)
+    return synth_config

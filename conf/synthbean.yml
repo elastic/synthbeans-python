@@ -7,4 +7,18 @@ spans:
 
 #instance_count: 100
 
+#instances:
+#  fast_instance:
+#    spans:
+#      instance_based_first_span:
+#        duration: 2000
+#      instance_based_second_span:
+#        duration: 2000
+#  slow_instance:
+#    spans:
+#      instance_based_first_span:
+#        duration: 3000
+#      instance_based_second_span:
+#        duration: 3000
+
 smoothing_strategy: floor

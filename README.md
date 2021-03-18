@@ -72,6 +72,8 @@ The application will attempt to schedule the first span at 1s intervals and the 
 amount of overhead (typically ~1ms), the duration values will be corrected before being sent to the APM server. For example, a span
 which takes 1,002ms to run will be corrected to 1,000ms prior to being sent.
 
+Take careful note that applying the `floor` smoother means that target span values of 1,000 and 1,500 will both be rounded down to 1,000! Sub-second smoothing is not currently available.
+
 The following strategies for smoothing are currently supported:
 
 |Name|Description|
@@ -114,3 +116,29 @@ jitter: 1
 ```
 
 The above will result in duration values between 990 an 1010.
+
+#### Named Instances
+
+If you wish, you may name instances and give them individual span profiles:
+
+```
+instances:
+  fast_instance:
+    spans:
+      instance_based_first_span:
+        duration: 2000
+      instance_based_second_span:
+        duration: 2000
+  slow_instance:
+    spans:
+      instance_based_first_span:
+        duration: 3000
+      instance_based_second_span:
+        duration: 3000
+````
+
+
+#### Caveats
+
+The `floor` smoother always rounds _down_ to the nearest second. Therefore, you should always choose values of no less than
+1,000! If you choose a value below 1,000, the value sent to the APM server will be zero.
