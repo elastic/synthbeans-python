@@ -15,6 +15,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+import os
 import argparse
 import yaml
 import configparser
@@ -29,6 +30,28 @@ def gather_args():
 def render_apm_config() -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read('conf/settings.ini')
+
+    server_url_env = os.environ.get('SYNTHBEAN_SERVER_URL')
+    if server_url_env: 
+        config['elasticapm']['server_url'] = server_url_env
+
+    service_name_env = os.environ.get('SYNTHBEAN_SERVICE_NAME') 
+    if service_name_env:
+       config['elasticapm']['service_name'] = service_name_env
+
+    log_level_env = os.environ.get('SYNTHBEAN_LOG_LEVEL')
+    if log_level_env:
+        config['elasticapm']['log_level'] = log_level_env
+
+    
+    environment_env = os.environ.get('SYNTHBEAN_ENVIRONMENT')
+    if environment_env:
+        config['elasticapm']['environment'] = environment_env
+
+    cloud_provider_env = os.environ.get('SYNTHBEAN_CLOUD_PROVIDER')
+    if cloud_provider_env:
+        config['elasticapm']['cloud_provider'] = cloud_provider_env
+    
     return config
 
 
