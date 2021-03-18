@@ -1,9 +1,9 @@
+import tempfile
+import base64
+import pygame
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
-import pygame
-import base64
-import tempfile
 
 def play_music(music_file):
     clock = pygame.time.Clock()
@@ -15,6 +15,7 @@ def play_music(music_file):
     while pygame.mixer.music.get_busy():
         # check if playback has finished
         clock.tick(30)
+
 
 def easter_time():
     thunder64 = '''\
