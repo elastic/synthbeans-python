@@ -19,15 +19,18 @@ import argparse
 import yaml
 import configparser
 
+
 def gather_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--ac-dc', action="store_true")
     return parser.parse_args()
 
+
 def render_apm_config() -> configparser.ConfigParser:
     config = configparser.ConfigParser()
     config.read('conf/settings.ini')
     return config
+
 
 def render_synth_config() -> dict:
     with open("conf/synthbean.yml") as fh_:
