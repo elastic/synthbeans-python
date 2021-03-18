@@ -22,26 +22,23 @@ from halo import Halo
 
 if __name__ == '__main__':
     cli_args = synthbean.config.gather_args()
+    welcome_text = synthbean.gen_welcome_msg(cli_args)
+
     apm_config = synthbean.config.render_apm_config()
     synth_config = synthbean.config.render_synth_config()
 
     loop = asyncio.get_event_loop()
 
     num_workers = synth_config.get('instance_count', 1)
+    stack_config = apm_config['elasticapm']
 
     for i in range(0, num_workers):
         client = synthbean.apm_preflight(
-            apm_config['elasticapm'],
-            f"synthbean-python-{str(i)}",
+            stack_config,
+            synthbean.gen_instance_name(i),
             synth_config
-            )
+        )
         synthbean.create_span_pool(synth_config, loop, client)
-
-    welcome_text = 'SynthBean active!'
-
-    if cli_args.ac_dc: 
-        synthbean.create_easter()
-        welcome_text = '-- 🎸🏴‍☠️️ For those who about to rock, the Elastic Observability Team salutes you! --'
 
     with Halo(text=welcome_text, spinner='dots') as spinner:
         try:
