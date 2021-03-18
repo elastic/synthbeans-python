@@ -28,7 +28,7 @@ def span_smoother(client, event):
     orig_val = event['duration']
     smoothed = math.floor(event['duration']/1000) * 1000
     event['duration'] = smoothed
-    pprint.pprint(
+    logging.debug(
         f"Logging a transaction with duration: {smoothed}. (Original value: {orig_val})")
-    pprint.pprint(event)
+    logging.debug(event)
     return event
