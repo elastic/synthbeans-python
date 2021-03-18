@@ -72,6 +72,8 @@ The application will attempt to schedule the first span at 1s intervals and the 
 amount of overhead (typically ~1ms), the duration values will be corrected before being sent to the APM server. For example, a span
 which takes 1,002ms to run will be corrected to 1,000ms prior to being sent.
 
+Take careful note that applying the `floor` smoother means that target span values of 1,000 and 1,500 will both be rounded down to 1,000! Sub-second smoothing is not currently available.
+
 The following strategies for smoothing are currently supported:
 
 |Name|Description|
