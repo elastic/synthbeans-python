@@ -15,6 +15,7 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+from inspect import stack
 import synthbean
 import synthbean.config
 import asyncio
@@ -32,13 +33,28 @@ if __name__ == '__main__':
     num_workers = synth_config.get('instance_count', 1)
     stack_config = apm_config['elasticapm']
 
-    for i in range(0, num_workers):
-        client = synthbean.apm_preflight(
-            stack_config,
-            synthbean.gen_instance_name(i),
-            synth_config
-        )
-        synthbean.create_span_pool(synth_config, loop, client)
+    if synth_config.get('spans'):
+        for i in range(0, num_workers):
+            client = synthbean.apm_preflight(
+                stack_config,
+                synthbean.gen_instance_name(i),
+                synth_config
+            )
+            synthbean.create_span_pool(synth_config, loop, client)
+
+    if synth_config.get('instances'):
+        for instance_name in synth_config['instances']:
+            client = synthbean.apm_preflight(
+                stack_config,
+                instance_name,
+                synth_config 
+            )
+
+            synthbean.create_span_pool(
+                synth_config['instances'][instance_name],
+                loop,
+                client
+            )
 
     with Halo(text=welcome_text, spinner='dots') as spinner:
         try:

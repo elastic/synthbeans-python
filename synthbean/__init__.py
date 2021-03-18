@@ -31,25 +31,32 @@ def gen_welcome_msg(cli_args):
         welcome_text = '-- 🎸🏴‍☠️️ For those who about to rock, the Elastic Observability Team salutes you! --'
     return welcome_text
 
-
-def apm_preflight(config, node_name, synth_config) -> elasticapm.Client:
-
-    # We're being a bit naughty here. Shhhh.
-    elasticapm.utils.cgroup.get_cgroup_container_metadata = lambda: {
-        'container': {'id': node_name}}
-    processors = []
+def verify_smoothing_config(synth_config):
     if synth_config.get('smoothing_strategy') == 'floor':
         for span in synth_config['spans']:
             if synth_config['spans'][span].get('jitter'):
                 raise Exception(
                     'Cannot use jitter and the "floor" smoothing strategy concurrently')
+
+
+def apm_preflight(stack_config, node_name, synth_config) -> elasticapm.Client:
+
+    verify_smoothing_config(synth_config)
+
+    # We're being a bit naughty here. Shhhh.
+    elasticapm.utils.cgroup.get_cgroup_container_metadata = lambda: {
+        'container': {'id': node_name}}
+
+    processors = []
+
+    if synth_config.get('smoothing_strategy') == 'floor':
         processors.append('synthbean.processors.span_smoother')
 
     client = elasticapm.Client(
         hostname=node_name,
         service_node_name=node_name,
-        service_name=config['service_name'],
-        server_url=config['server_url'],
+        service_name=stack_config['service_name'],
+        server_url=stack_config['server_url'],
         processors=processors)
 
     elasticapm.instrument()

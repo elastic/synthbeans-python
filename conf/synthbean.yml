@@ -10,15 +10,15 @@ spans:
 instances:
   fast_instance:
     spans:
-      first_span:
-        duration: 50
-      second_span:
-        duration: 100
+      instance_based_first_span:
+        duration: 2000
+      instance_based_second_span:
+        duration: 2000
   slow_instance:
     spans:
-      first_span:
-        duration: 500
-      second_span:
-        duration: 1000
+      instance_based_first_span:
+        duration: 3000
+      instance_based_second_span:
+        duration: 3000
 
 smoothing_strategy: floor

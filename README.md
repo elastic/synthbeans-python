@@ -114,3 +114,29 @@ jitter: 1
 ```
 
 The above will result in duration values between 990 an 1010.
+
+#### Named Instances
+
+If you wish, you may name instances and give them individual span profiles:
+
+```
+instances:
+  fast_instance:
+    spans:
+      instance_based_first_span:
+        duration: 2000
+      instance_based_second_span:
+        duration: 2000
+  slow_instance:
+    spans:
+      instance_based_first_span:
+        duration: 3000
+      instance_based_second_span:
+        duration: 3000
+````
+
+
+#### Caveats
+
+The `floor` smoother always rounds _down_ to the nearest second. Therefore, you should always choose values of no less than
+1,000! If you choose a value below 1,000, the value sent to the APM server will be zero.
