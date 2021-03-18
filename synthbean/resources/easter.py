@@ -1,8 +1,9 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+
 import tempfile
 import base64
 import pygame
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
 
 def play_music(music_file):
