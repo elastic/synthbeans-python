@@ -28,13 +28,13 @@ def gen_welcome_msg(cli_args):
     welcome_text = 'SynthBean active!'
     if cli_args.ac_dc:
         create_easter()
-        welcome_text = '-- 🎸🏴‍☠️️ For those who about to rock, the Elastic Observability Team salutes you! --'
+        welcome_text = '-- 🎸🏴‍☠️️ For those who are about to rock, the Elastic Observability Team salutes you! --'
     return welcome_text
 
 def verify_smoothing_config(synth_config):
-    if synth_config.get('smoothing_strategy') == 'floor':
-        for span in synth_config['spans']:
-            if synth_config['spans'][span].get('jitter'):
+    if synth_config.get('smoothing_strategy') == 'floor' and synth_config.get('transactions'):
+        for transaction in synth_config['transactions']:
+            if synth_config['transactions'][transaction].get('jitter'):
                 raise Exception(
                     'Cannot use jitter and the "floor" smoothing strategy concurrently')
 
@@ -73,22 +73,25 @@ def calculate_jitter(delay: int, jitter: int) -> int:
 
 
 def create_span_pool(synth_config, loop, client) -> None:
-    for span in synth_config['spans']:
-        async def worker(delay, span, jitter):
+    for transaction in synth_config['transactions']:
+        async def worker(delay, transaction, jitter):
             while True:
                 if jitter:
                     delay = calculate_jitter(delay, jitter)
                 client.begin_transaction(transaction_type="script")
                 await asyncio.sleep(delay / 1000)
-                client.end_transaction(name=span, result="success")
+                client.end_transaction(name=transaction, result="success")
 
-        span_config = synth_config['spans'][span]
+        transaction_config = synth_config['transactions'][transaction]
         loop.create_task(
-            worker(span_config['duration'], span, span_config.get('jitter')))
+            worker(transaction_config['duration'], transaction, transaction_config.get('jitter')))
 
 
 def create_easter() -> None:
     import synthbean.resources.easter
     from multiprocessing import Process
-    p = Process(target=synthbean.resources.easter.easter_time)
-    p.start()
+    p1 = Process(target=synthbean.resources.easter.easter_time)
+    p1.start()
+
+    p2 = Process(target=synthbean.resources.easter.easter_show)
+    p2.start()

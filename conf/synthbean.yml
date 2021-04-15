@@ -1,21 +1,21 @@
-spans:
-  first_span:
+transactions:
+  first_transaction#:
     duration: 1000
-#    jitter: 10
-  second_span:
+      #    jitter: 10
+  second_transaction:
     duration: 5000
 
-#instance_count: 100
+instance_count: 100
 
 #instances:
 #  fast_instance:
-#    spans:
+#    transactions:
 #      instance_based_first_span:
 #        duration: 2000
 #      instance_based_second_span:
 #        duration: 2000
 #  slow_instance:
-#    spans:
+#    transactions:
 #      instance_based_first_span:
 #        duration: 3000
 #      instance_based_second_span:

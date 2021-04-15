@@ -32,7 +32,7 @@ if __name__ == '__main__':
     num_workers = synth_config.get('instance_count', 1)
     stack_config = apm_config['elasticapm']
 
-    if synth_config.get('spans'):
+    if synth_config.get('transactions'):
         for i in range(0, num_workers):
             client = synthbean.apm_preflight(
                 stack_config,
