@@ -1,9 +1,11 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 
+import time
 import tempfile
 import base64
 import pygame
+import pyglet
 
 
 def play_music(music_file):
@@ -17,6 +19,27 @@ def play_music(music_file):
         # check if playback has finished
         clock.tick(30)
 
+def easter_show():
+    time.sleep(1)
+    # pick an animated gif file you have in the working directory
+    ag_file = "giphy.gif"
+    animation = pyglet.resource.animation(ag_file)
+    sprite = pyglet.sprite.Sprite(animation)
+
+    # create a window and set it to the image size
+    win = pyglet.window.Window(width=sprite.width, height=sprite.height)
+
+    # set window background color = r, g, b, alpha
+    # each value goes from 0.0 to 1.0
+    green = 0, 1, 0, 1
+    pyglet.gl.glClearColor(*green)
+
+    @win.event
+    def on_draw():
+        win.clear()
+        sprite.draw()
+
+    pyglet.app.run()
 
 def easter_time():
     thunder64 = '''\
